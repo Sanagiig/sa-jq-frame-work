@@ -1,0 +1,119 @@
+// Form control focus state
+//
+// Generate a customized focus state and for any input with the specified color,
+// which defaults to the `$input-focus-border-color` variable.
+//
+// We highly encourage you to not customize the default value, but instead use
+// this to tweak colors on an as-needed basis. This aesthetic change is based on
+// WebKit's default styles, but applicable to a wider range of browsers. Its
+// usability and accessibility should be taken into account with any change.
+//
+// Example usage: change the default blue border and shadow to white for better
+// contrast against a dark gray background.
+@mixin form-control-focus() {
+  &:focus {
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    outline: 0;
+    // Avoid using mixin so we can pass custom focus shadow properly
+    @if $enable-shadows {
+      box-shadow: $input-box-shadow, $input-focus-box-shadow;
+    } @else {
+      box-shadow: $input-focus-box-shadow;
+    }
+  }
+}
+
+@mixin form-validation-state($state, $color) {
+  .#{$state}-feedback {
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    margin-top: $form-feedback-margin-top;
+    font-size: $form-feedback-font-size;
+    color: $color;
+  }
+
+  .#{$state}-tooltip {
+    position: absolute;
+    top: 100%;
+    z-index: 5;
+    display: none;
+    max-width: 100%; // Contain to parent when possible
+    padding: .5rem;
+    margin-top: .1rem;
+    font-size: .875rem;
+    line-height: 1;
+    color: color-yiq($color);
+    background-color: rgba($color, .8);
+    border-radius: .2rem;
+  }
+
+  // 显示内部提示
+  .form,
+  .form-row,
+  .custom-select {
+    &.is-#{$state} {
+      .#{$state}-feedback,
+      .#{$state}-tooltip {
+        display: block;
+      }
+
+      input,
+      select,
+      textarea {
+        & {
+
+          border-color: $color;
+        }
+        &:focus {
+          box-shadow: 0 0 0 $input-focus-width rgba($color, .25);
+        }
+      }
+    }
+  }
+
+  //显示兄弟提示
+  input,
+  select,
+  textarea {
+    &.is-#{$state} {
+      & {
+        border-color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 $input-focus-width rgba($color, .25);
+      }
+      // is state 相邻的元素也显示提示
+      & + .#{$state}-feedback,
+      & + .#{$state}-tooltip {
+        display: block;
+      }
+    }
+  }
+
+  //单行form 的样式
+  .form-row,
+  .form-check {
+    &.is-#{$state} {
+      & .label {
+        color: color-yiq($color);
+        background-color: $color;
+      }
+
+      & .check-label {
+        color: $color;
+      }
+
+      .custom-control {
+        ~ .custom-control-label::before {
+          @include gradient-bg(lighten($color, 10%));
+        }
+      }
+
+    }
+  }
+}

@@ -1,0 +1,25 @@
+//=====
+
+  //sa-grid
+  //栅格系统
+
+//=====
+@at-root {
+  @-ms-viewport { width: device-width; } // stylelint-disable-line at-rule-no-vendor-prefix
+}
+
+html {
+  box-sizing: border-box;
+  -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+@import "function/function";
+@import "variables";
+@import "mixins/mixins";
+@import "grid";

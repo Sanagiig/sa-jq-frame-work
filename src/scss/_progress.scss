@@ -1,0 +1,73 @@
+/*=====
+
+  progress
+
+=====*/
+
+@keyframes progress-bar-stripes {
+  from { background-position: $progress-height 0; }
+  to { background-position: 0 0; }
+}
+
+@keyframes progress-bar-stripes-sm {
+  from { background-position: $progress-height-sm 0; }
+  to { background-position: 0 0; }
+}
+
+@keyframes progress-bar-stripes-lg {
+  from { background-position: $progress-height-lg 0; }
+  to { background-position: 0 0; }
+}
+
+.progress {
+  display: flex;
+  height: $progress-height;
+  overflow: hidden; // force rounded corners by cropping it
+  font-size: $progress-font-size;
+  background-color: $progress-bg;
+  @include border-radius($progress-border-radius);
+  @include box-shadow($progress-box-shadow);
+}
+
+// progress sizing
+.progress-sm{
+  height: $progress-height-sm;
+  & .progress-bar-striped{
+    background-size: $progress-height-sm $progress-height-sm;
+  }
+
+  & .progress-bar-animated{
+    animation: progress-bar-stripes-sm $progress-bar-animation-timing;
+  }
+}
+
+.progress-lg{
+  height: $progress-height-lg;
+  & .progress-bar-striped{
+    background-size: $progress-height-lg $progress-height-lg;
+  }
+
+  & .progress-bar-animated{
+    animation: progress-bar-stripes-lg $progress-bar-animation-timing;
+  }
+}
+
+.progress-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $progress-bar-color;
+  text-align: center;
+  white-space: nowrap;
+  background-color: $progress-bar-bg;
+  @include transition($progress-bar-transition);
+}
+
+.progress-bar-striped {
+  @include gradient-striped();
+  background-size: $progress-height $progress-height;
+}
+
+.progress-bar-animated {
+  animation: progress-bar-stripes $progress-bar-animation-timing;
+}

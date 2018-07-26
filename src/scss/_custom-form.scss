@@ -1,0 +1,486 @@
+// Embedded icons from Open Iconic.
+// Released under MIT and copyright 2014 Waybury.
+// https://useiconic.com/open
+
+
+// Checkboxes and radios
+//
+// Base class takes care of all the key behavioral aspects.
+
+.custom-control {
+  position: relative;
+  display: block;
+  min-height: (1rem * $line-height-base);
+  padding-left: $custom-control-gutter;
+
+  .custom-control-label{
+    &{
+      height:$custom-control-gutter;
+      font-size:$custom-font-size;
+      line-height:$custom-line-height;
+    }
+    &::before,
+    &::after {
+      width: $custom-control-indicator-size;
+      height: $custom-control-indicator-size;
+      left: -$custom-control-gutter;
+    }
+  }
+}
+
+//不同 form 的 label大小
+.custom-control-sm{
+  padding-left: $custom-control-gutter-sm;
+  .custom-control-label{
+    &{
+      height:$custom-control-gutter-sm;
+      font-size:$custom-font-size-sm;
+      line-height:$custom-line-height-sm;
+    }
+    &::before,
+    &::after {
+      width: $custom-control-indicator-size-sm;
+      height: $custom-control-indicator-size-sm;
+      left: -$custom-control-gutter-sm;
+    }
+  }
+}
+
+.custom-control-lg{
+  padding-left: $custom-control-gutter-lg;
+  .custom-control-label{
+    &{
+      height:$custom-control-gutter-lg;
+      font-size:$custom-font-size-lg;
+      line-height:$custom-line-height-lg;
+    }
+
+    &::before,
+    &::after{
+      width: $custom-control-indicator-size-lg;
+      height: $custom-control-indicator-size-lg;
+      left:-$custom-control-gutter-lg;
+    }
+  }
+}
+
+.custom-control-inline {
+  display: inline-flex;
+  margin-right: $custom-control-spacer-x;
+}
+
+.custom-control-input {
+  position: absolute;
+  z-index: -1; // Put the input behind the label so it doesn't overlay text
+  opacity: 0;
+
+  &:checked ~ .custom-control-label::before {
+    color: $custom-control-indicator-checked-color;
+    @include gradient-bg($custom-control-indicator-checked-bg);
+    @include box-shadow($custom-control-indicator-checked-box-shadow);
+  }
+
+  &:focus ~ .custom-control-label::before {
+    // the mixin is not used here to make sure there is feedback
+    box-shadow: $custom-control-indicator-focus-box-shadow;
+  }
+
+  &:active ~ .custom-control-label::before {
+    color: $custom-control-indicator-active-color;
+    background-color: $custom-control-indicator-active-bg;
+    @include box-shadow($custom-control-indicator-active-box-shadow);
+  }
+
+  &:disabled {
+    ~ .custom-control-label {
+      color: $custom-control-label-disabled-color;
+
+      &::before {
+        background-color: $custom-control-indicator-disabled-bg;
+      }
+    }
+  }
+}
+
+// Custom control indicators
+//
+// Build the custom controls out of pseudo-elements.
+
+.custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  padding-left:0.3rem;
+  font-color:$gray-700;
+
+  // Background-color and (when enabled) gradient
+  &::before {
+    position: absolute;
+    //top: (($line-height-base - $custom-control-indicator-size) / 2);
+    top:0;
+    left: -$custom-control-gutter;
+    display: block;
+    border: $custom-control-indicator-border-width solid $custom-control-indicator-border-color;
+    width: $custom-control-indicator-size;
+    height: $custom-control-indicator-size;
+    pointer-events: none;
+    content: "";
+    user-select: none;
+    background-color: $custom-control-indicator-bg;
+    @include box-shadow($custom-control-indicator-box-shadow);
+  }
+
+  // Foreground (icon)
+  &::after {
+    position: absolute;
+    //top: (($line-height-base - $custom-control-indicator-size) / 2);
+    top:0;
+    left: -$custom-control-gutter;
+    display: block;
+    width: $custom-control-indicator-size;
+    height: $custom-control-indicator-size;
+    content: "";
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: $custom-control-indicator-bg-size;
+  }
+}
+
+// Checkboxes
+//
+// Tweak just a few things for checkboxes.
+
+.custom-checkbox {
+  .custom-control-label::before {
+    @include border-radius($custom-checkbox-indicator-border-radius);
+  }
+
+  .custom-control-input:checked ~ .custom-control-label {
+    &::before {
+      @include gradient-bg($custom-control-indicator-checked-bg);
+    }
+    &::after {
+      background-image: $custom-checkbox-indicator-icon-checked;
+    }
+  }
+
+  .custom-control-input:indeterminate ~ .custom-control-label {
+    &::before {
+      @include gradient-bg($custom-checkbox-indicator-indeterminate-bg);
+      @include box-shadow($custom-checkbox-indicator-indeterminate-box-shadow);
+    }
+    &::after {
+      background-image: $custom-checkbox-indicator-icon-indeterminate;
+    }
+  }
+
+  .custom-control-input:disabled {
+    &:checked ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+    &:indeterminate ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+  }
+}
+
+// Radios
+//
+// Tweak just a few things for radios.
+
+.custom-radio {
+  .custom-control-label::before {
+    border-radius: $custom-radio-indicator-border-radius;
+  }
+
+  .custom-control-input:checked ~ .custom-control-label {
+    &::before {
+      @include gradient-bg($custom-control-indicator-checked-bg);
+    }
+    &::after {
+      background-image: $custom-radio-indicator-icon-checked;
+    }
+  }
+
+  .custom-control-input:disabled {
+    &:checked ~ .custom-control-label::before {
+      background-color: $custom-control-indicator-checked-disabled-bg;
+    }
+  }
+}
+
+
+// Select
+//
+// Replaces the browser default select with a custom one, mostly pulled from
+// https://primer.github.io/.
+//
+
+.custom-select {
+  appearance: none;
+  display: inline-block;
+  width: 100%;
+  height: $custom-select-height;
+  padding: $custom-select-padding-y ($custom-select-padding-x + $custom-select-indicator-padding) $custom-select-padding-y $custom-select-padding-x;
+  line-height: $custom-select-line-height;
+  color: $custom-select-color;
+  vertical-align: middle;
+  background: $custom-select-bg $custom-select-indicator no-repeat right $custom-select-padding-x center;
+  background-size: $custom-select-bg-size;
+  border: $custom-select-border-width solid $custom-select-border-color;
+  @if $enable-rounded {
+    border-radius: $custom-select-border-radius;
+  } @else {
+    border-radius: 0;
+  }
+
+
+  &:focus {
+    border-color: $custom-select-focus-border-color;
+    outline: 0;
+    box-shadow: $custom-select-focus-box-shadow;
+
+    &::-ms-value {
+      // For visual consistency with other platforms/browsers,
+      // suppress the default white text on blue background highlight given to
+      // the selected option text when the (still closed) <select> receives focus
+      // in IE and (under certain conditions) Edge.
+      // See https://github.com/twbs/bootstrap/issues/19398.
+      color: $input-color;
+      background-color: $input-bg;
+    }
+  }
+
+  &[multiple],
+  &[size]:not([size="1"]) {
+    height: auto;
+    padding-right: $custom-select-padding-x;
+    background-image: none;
+  }
+
+  &:disabled {
+    color: $custom-select-disabled-color;
+    background-color: $custom-select-disabled-bg;
+  }
+
+  // Hides the default caret in IE11
+  &::-ms-expand {
+    opacity: 0;
+  }
+}
+
+.custom-select-sm {
+  height: $custom-select-height-sm;
+  padding-top: $custom-select-padding-y;
+  padding-bottom: $custom-select-padding-y;
+  font-size: $custom-select-font-size-sm;
+}
+
+.custom-select-lg {
+  height: $custom-select-height-lg;
+  padding-top: $custom-select-padding-y;
+  padding-bottom: $custom-select-padding-y;
+  font-size: $custom-select-font-size-lg;
+}
+
+// Range
+//
+// Style range inputs the same across browsers. Vendor-specific rules for pseudo
+// elements cannot be mixed. As such, there are no shared styles for focus or
+// active states on prefixed selectors.
+
+.custom-range {
+  appearance: none;
+  width: 100%;
+  height:$custom-range-track-height;
+  padding-left: 0; // Firefox specific
+  background: linear-gradient(lighten($primary,15%), lighten($primary,15%)) no-repeat;
+  background-color: transparent;
+  border-radius: $custom-range-track-border-radius;
+  &:focus {
+    outline: none;
+  }
+
+  &::-moz-focus-outer {
+    border: 0;
+  }
+
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: $custom-range-thumb-width;
+    height: $custom-range-thumb-height;
+    margin-top: -($custom-range-thumb-width * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+    background: $white;
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+
+    &:focus {
+      outline: none;
+      box-shadow: $custom-range-thumb-focus-box-shadow; // No mixin for focus accessibility
+    }
+
+    &:active {
+      //@include gradient-bg($custom-range-thumb-active-bg);
+    }
+  }
+
+  &::-webkit-slider-runnable-track{
+    appearance: none;
+    width: $custom-range-track-width;
+    height: $custom-range-track-height;
+    color: transparent; // Why?
+    background-color: transparent;
+    @include border-radius($custom-range-track-border-radius);
+    box-shadow:$custom-range-track-box-shadow; //轨道内置阴影效果
+
+  }
+
+
+  &::-moz-range-thumb {
+    appearance: none;
+    width: $custom-range-thumb-width;
+    height: $custom-range-thumb-height;
+    margin-top: -($custom-range-thumb-width * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+    background: $white;
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+
+    &:focus {
+      outline: none;
+      box-shadow: $custom-range-thumb-focus-box-shadow; // No mixin for focus accessibility
+    }
+
+  }
+
+  &::-moz-range-track {
+    appearance: none;
+    width: $custom-range-track-width;
+    height: $custom-range-track-height;
+    color: transparent; // Why?
+    background-color: transparent;
+    @include border-radius($custom-range-track-border-radius);
+    box-shadow:$custom-range-track-box-shadow; //轨道内置阴影效果
+  }
+
+  &::-ms-thumb {
+    appearance: none;
+    width: $custom-range-thumb-width;
+    height: $custom-range-thumb-height;
+    margin-top: -($custom-range-thumb-width * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+    background: $white;
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+
+    &:focus {
+      outline: none;
+      box-shadow: $custom-range-thumb-focus-box-shadow; // No mixin for focus accessibility
+    }
+  }
+
+  &::-ms-track {
+    appearance: none;
+    width: $custom-range-track-width;
+    height: $custom-range-track-height;
+    color: transparent; // Why?
+    background-color: transparent;
+    @include border-radius($custom-range-track-border-radius);
+    box-shadow:$custom-range-track-box-shadow; //轨道内置阴影效果
+  }
+
+  &::-ms-fill-lower {
+    background-color: $custom-range-track-bg;
+    @include border-radius($custom-range-track-border-radius);
+  }
+
+  &::-ms-fill-upper {
+    margin-right: 15px; // arbitrary?
+    background-color: $custom-range-track-bg;
+    @include border-radius($custom-range-track-border-radius);
+  }
+}
+
+//不同size range
+.custom-range-sm{
+  height:$custom-range-track-height-sm;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: $custom-range-thumb-width-sm;
+    height: $custom-range-thumb-height-sm;
+    margin-top: -($custom-range-thumb-width-sm * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+  }
+
+  &::-webkit-slider-runnable-track{
+    height: $custom-range-track-height-sm;
+  }
+
+
+  &::-moz-range-thumb {
+    width: $custom-range-thumb-width-sm;
+    height: $custom-range-thumb-height-sm;
+    margin-top: -($custom-range-thumb-width-sm * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+  }
+
+  &::-moz-range-track {
+    height: $custom-range-track-height-sm;
+  }
+
+  &::-ms-thumb {
+    width: $custom-range-thumb-width-sm;
+    height: $custom-range-thumb-height-sm;
+    margin-top: -($custom-range-thumb-width-sm * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+    background: $white;
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+  }
+
+  &::-ms-track {
+    height: $custom-range-track-height-sm;
+  }
+}
+
+.custom-range-lg{
+  height:$custom-range-track-height-lg;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: $custom-range-thumb-width-lg;
+    height: $custom-range-thumb-height-lg;
+    margin-top: -($custom-range-thumb-width-lg * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+  }
+
+  &::-webkit-slider-runnable-track{
+    height: $custom-range-track-height-lg;
+  }
+
+
+  &::-moz-range-thumb {
+    width: $custom-range-thumb-width-lg;
+    height: $custom-range-thumb-height-lg;
+    margin-top: -($custom-range-thumb-width-lg * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+  }
+
+  &::-moz-range-track {
+    height: $custom-range-track-height-lg;
+  }
+
+  &::-ms-thumb {
+    width: $custom-range-thumb-width-lg;
+    height: $custom-range-thumb-height-lg;
+    margin-top: -($custom-range-thumb-width-lg * .25); // thumb 是 trak 高度的两倍 情况下才可以垂直居中
+    background: $white;
+    border: $custom-range-thumb-border;
+    @include border-radius($custom-range-thumb-border-radius);
+    @include box-shadow($custom-range-thumb-box-shadow);
+  }
+
+  &::-ms-track {
+    height: $custom-range-track-height-lg;
+  }
+}
+
+//不同颜色 range

@@ -1,0 +1,108 @@
+
+
+//container maker
+@mixin make-container(){
+  width: 100%;
+  padding-right: $grid-container-padding;
+  padding-left: $grid-container-padding;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+//container max-width
+@mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints){
+  @each $breakpoint, $container-max-width in $max-widths {
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      max-width: $container-max-width;
+    }
+  }
+}
+
+
+@mixin make-row(){
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: $grid-row-gutter;
+  margin-left: $grid-row-gutter;
+}
+
+@mixin make-col($size, $columns: $grid-columns) {
+  flex: 0 0 percentage($size / $columns);
+  // Add a `max-width` to ensure content within each column does not blow out
+  // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
+  // do not appear to require this.
+  max-width: percentage($size / $columns);
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  $num: $size / $columns;
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+@mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-col-gutter, $breakpoints: $grid-breakpoints){
+  %grid-column {
+    position: relative;
+    width: 100%;
+    min-height: 1px; // Prevent columns from collapsing when empty
+    padding-right: ($gutter / 2);
+    padding-left: ($gutter / 2);
+  }
+
+  //针对所有屏幕样式
+  @for $i from 1 through $columns {
+    .col#{$i} {
+      @include make-col($i, $columns);
+      @extend %grid-column;
+    }
+  }
+
+  @for $i from 0 through ($columns - 1) {
+    .offset-#{$i} {
+      @include make-col-offset($i, $columns);
+    }
+  }
+
+  .order-first { order: -1; }
+
+  .order-last { order: $columns + 1; }
+
+
+  //针对不同屏幕大小的样式
+
+  @each $point in map-keys($breakpoints){
+    $infix: breakpoint-infix($point);
+
+    .col#{$infix},
+    .col#{$infix}-auto {
+      @extend %grid-column;
+    }
+
+
+    @include media-breakpoint-up($point,$breakpoints){
+
+      @for $i from 1 through $columns {
+        .col#{$infix}-#{$i} {
+          padding-right: ($gutter / 2);
+          padding-left: ($gutter / 2);
+          @include make-col($i, $columns);
+        }
+      }
+
+      .order#{$infix}-first { order: -1; }
+
+      .order#{$infix}-last { order: $columns + 1; }
+
+      @for $i from 0 through $columns {
+        .order#{$infix}-#{$i} { order: $i; }
+      }
+
+      @for $i from 0 through ($columns - 1) {
+        @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
+          .offset#{$infix}-#{$i} {
+            @include make-col-offset($i, $columns);
+          }
+        }
+      }
+    }
+  }
+}

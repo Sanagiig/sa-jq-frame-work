@@ -1,0 +1,54 @@
+// Tables
+
+@mixin build-table-row-variant($state, $background) {
+
+  // 如果是 dark 则不需要重写
+  @if $state != dark {
+    .table.table-#{$state} {
+      &,
+      > th,
+      > td {
+        background-color: $background;
+      }
+
+      // hover 默认是 tr 加透明色
+      //&.table-hover {
+      //  $hover-background: darken($background, 5%);
+      //
+      //  > tr:hover {
+      //    background-color: $hover-background;
+      //  }
+      //}
+
+
+      & > thead th,
+      & > thead tr,
+      & > thead td,
+      & > tbody th,
+      & > tbody tr,
+      & > tbody td {
+
+        //border 颜色
+        &{
+          border-color:mix(color-yiq($background),$background , $table-border-ratio);
+        }
+        //active 样式
+        &.active:not(:empty),
+        &:active:not(:empty) {
+          &.active,
+          &:active {
+            background-color: darken($background, $table-active-ratio);
+          }
+        }
+      }
+    }
+  }
+}
+
+//强制更改hover
+@mixin table-row-hover-solid($state,$background) {
+  //设置table hover 的颜色
+  .table-hover.table-hover-#{$state}-solid:not(.table-dark) tbody tr:hover {
+    background-color: darken($background, 5%);
+  }
+}

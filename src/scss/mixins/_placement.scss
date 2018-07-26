@@ -1,0 +1,48 @@
+@mixin build-placement-variant(){
+  &[placement]{
+    top:auto;
+    left:auto;
+    left:auto;
+    right:auto;
+  }
+
+  &[placement="top"]{
+    left: 0;
+    bottom: 100%;
+  }
+
+  &[placement="right"]{
+    top:0;
+    left:100%;
+  }
+
+  &[placement="bottom"]{
+    left:0;
+    top:100%;
+  }
+
+  &[placement="left"] {
+    right: 100%;
+    top: 0;
+  }
+
+  &[placement="top-left"]{
+    right: 100%;
+    bottom: 100%;
+  }
+
+  &[placement="top-right"]{
+    left:100%;
+    bottom: 100%;
+  }
+
+  &[placement="bottom-left"]{
+    right:100%;
+    top:100%;
+  }
+
+  &[placement="bottom-right"] {
+    left: 100%;
+    top: 100%;
+  }
+}
